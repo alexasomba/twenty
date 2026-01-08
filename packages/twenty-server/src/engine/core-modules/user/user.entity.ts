@@ -29,7 +29,7 @@ registerEnumType(OnboardingStatus, {
   description: 'Onboarding status',
 });
 
-@Entity({ name: 'user', schema: 'core' })
+@Entity({ name: 'user' })
 @ObjectType('User')
 @Index('UQ_USER_EMAIL', ['email'], {
   unique: true,
@@ -83,15 +83,15 @@ export class UserEntity {
   canAccessFullAdminPanel: boolean;
 
   @Field()
-  @CreateDateColumn({ type: 'timestamptz' })
+  @CreateDateColumn()
   createdAt: Date;
 
   @Field()
-  @UpdateDateColumn({ type: 'timestamptz' })
+  @UpdateDateColumn()
   updatedAt: Date;
 
   @Field({ nullable: true })
-  @DeleteDateColumn({ type: 'timestamptz' })
+  @DeleteDateColumn()
   deletedAt: Date;
 
   @Field(() => String, { nullable: false })

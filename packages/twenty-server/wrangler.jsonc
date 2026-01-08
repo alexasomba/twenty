@@ -7,12 +7,10 @@
   // by default for compatibility_date >= 2025-04-01, making env vars available via process.env
   "compatibility_flags": ["nodejs_compat"],
   "workers_dev": true,
-
   // Smart Placement: run Worker closer to D1 database to reduce latency
   "placement": {
     "mode": "smart",
   },
-
   // D1 Database Bindings
   "d1_databases": [
     {
@@ -20,10 +18,10 @@
       "database_name": "twenty-crm-core",
       "database_id": "${D1_DATABASE_ID}",
       "preview_database_id": "${D1_PREVIEW_DATABASE_ID}",
-      "migrations_dir": "./migrations/d1",
+      "migrations_dir": "./migrations",
+      "remote": true,
     },
   ],
-
   // KV Namespace Bindings
   "kv_namespaces": [
     {
@@ -37,7 +35,6 @@
       "preview_id": "${KV_SESSION_PREVIEW_ID}",
     },
   ],
-
   // R2 Bucket Bindings
   "r2_buckets": [
     {
@@ -45,7 +42,6 @@
       "bucket_name": "twenty-crm-files",
     },
   ],
-
   // Queue Producer Bindings
   "queues": {
     "producers": [
@@ -94,7 +90,6 @@
       },
     ],
   },
-
   // Durable Objects for Real-Time
   "durable_objects": {
     "bindings": [
@@ -104,7 +99,6 @@
       },
     ],
   },
-
   // Durable Object Migrations
   "migrations": [
     {
@@ -112,18 +106,15 @@
       "new_classes": ["WorkspaceRealtimeHub"],
     },
   ],
-
   // Scheduled Triggers (Cron Jobs)
   "triggers": {
     "crons": ["*/1 * * * *", "*/5 * * * *", "0 * * * *"],
   },
-
   // Environment Variables
   "vars": {
     "ENVIRONMENT": "development",
     "LOG_LEVEL": "debug",
   },
-
   // Environment-specific overrides
   "env": {
     "production": {

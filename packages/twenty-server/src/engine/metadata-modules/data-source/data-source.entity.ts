@@ -29,7 +29,7 @@ export class DataSourceEntity extends WorkspaceRelatedEntity {
   @Column({ nullable: true })
   schema: string;
 
-  @Column({ type: 'enum', enum: ['postgres'], default: 'postgres' })
+  @Column({ type: 'simple-enum', enum: ['postgres'], default: 'postgres' })
   type: DataSourceType;
 
   @Column({ default: false })
@@ -40,9 +40,9 @@ export class DataSourceEntity extends WorkspaceRelatedEntity {
   })
   objects: ObjectMetadataEntity[];
 
-  @CreateDateColumn({ type: 'timestamptz' })
+  @CreateDateColumn()
   createdAt: Date;
 
-  @UpdateDateColumn({ type: 'timestamptz' })
+  @UpdateDateColumn()
   updatedAt: Date;
 }

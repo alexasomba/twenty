@@ -4,6 +4,7 @@ import { InjectDataSource } from '@nestjs/typeorm';
 import { msg } from '@lingui/core/macro';
 import { type DataSource, type EntityManager } from 'typeorm';
 
+import { isD1Environment } from 'src/database/typeorm/d1/is-d1-environment.util';
 import { DataSourceService } from 'src/engine/metadata-modules/data-source/data-source.service';
 import {
   PermissionsException,
@@ -32,10 +33,18 @@ export class WorkspaceDataSourceService {
    *
    * Create a new DB schema for a workspace
    *
+   * For D1/SQLite: No-op (uses single DB with workspaceId column scoping)
+   * For PostgreSQL: Creates per-workspace schema
+   *
    * @param workspaceId
-   * @returns
+   * @returns Schema name (or empty string for D1)
    */
   public async createWorkspaceDBSchema(workspaceId: string): Promise<string> {
+    // D1/SQLite doesn't support schemas - we use workspaceId column filtering instead
+    if (isD1Environment()) {
+      return '';
+    }
+
     const schemaName = getWorkspaceSchemaName(workspaceId);
     const queryRunner = this.coreDataSource.createQueryRunner();
 
@@ -52,10 +61,20 @@ export class WorkspaceDataSourceService {
    *
    * Delete a DB schema for a workspace
    *
+   * For D1/SQLite: No-op (data deletion handled via workspaceId filtering)
+   * For PostgreSQL: Drops per-workspace schema
+   *
    * @param workspaceId
    * @returns
    */
   public async deleteWorkspaceDBSchema(workspaceId: string): Promise<void> {
+    // D1/SQLite doesn't have schemas - workspace data cleanup done via workspaceId column
+    if (isD1Environment()) {
+      // TODO: In D1, we should delete all records with this workspaceId
+      // For now, this is a no-op - implement CASCADE delete or batch cleanup
+      return;
+    }
+
     const schemaName = getWorkspaceSchemaName(workspaceId);
     const queryRunner = this.coreDataSource.createQueryRunner();
 

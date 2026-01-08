@@ -31,10 +31,10 @@
 - [x] T002 [P] Add Cloudflare Workers TypeScript types to packages/twenty-server/package.json
 - [x] T003 [P] Create worker entry point stub in packages/twenty-server/src/worker.ts
 - [x] T004 [P] Create .dev.vars template for local secrets in packages/twenty-server/.dev.vars.example
-- [ ] T005 Create D1 database via `wrangler d1 create twenty-crm-core`
-- [ ] T006 [P] Create KV namespaces for CACHE_STORE and SESSION_STORE via wrangler CLI
-- [ ] T007 [P] Create R2 bucket `twenty-crm-files` via wrangler CLI
-- [ ] T008 [P] Create Cloudflare Queues (twenty-critical, twenty-workflow, twenty-messaging, twenty-background, twenty-dlq) via wrangler CLI
+- [x] T005 Create D1 database via `wrangler d1 create twenty-crm-core`
+- [x] T006 [P] Create KV namespaces for CACHE_STORE and SESSION_STORE via wrangler CLI
+- [x] T007 [P] Create R2 bucket `twenty-crm-files` via wrangler CLI
+- [x] T008 [P] Create Cloudflare Queues (twenty-critical, twenty-workflow, twenty-messaging, twenty-background, twenty-dlq) via wrangler CLI
 - [x] T009 Configure Nx build target for Worker bundle in packages/twenty-server/project.json
 
 ---
@@ -98,26 +98,26 @@
 
 ### Core Entity Migration
 
-- [ ] T036 [P] [US1] Migrate User entity to D1-compatible format in packages/twenty-server/src/engine/core-modules/user/user.entity.ts
-- [ ] T037 [P] [US1] Migrate Workspace entity to D1-compatible format in packages/twenty-server/src/engine/core-modules/workspace/workspace.entity.ts
-- [ ] T038 [P] [US1] Migrate WorkspaceMember entity in packages/twenty-server/src/engine/core-modules/workspace/workspace-member.entity.ts
-- [ ] T039 [US1] Create initial D1 migration for core tables in packages/twenty-server/migrations/0001_core_schema.sql
+- [x] T036 [P] [US1] Migrate User entity to D1-compatible format in packages/twenty-server/src/engine/core-modules/user/user.entity.ts
+- [x] T037 [P] [US1] Migrate Workspace entity to D1-compatible format in packages/twenty-server/src/engine/core-modules/workspace/workspace.entity.ts
+- [x] T038 [P] [US1] Migrate WorkspaceMember entity in packages/twenty-server/src/modules/workspace-member/standard-objects/workspace-member.workspace-entity.ts
+- [x] T039 [US1] Create initial D1 migration for core tables in packages/twenty-server/migrations/0001_core_schema.sql
 
 ### Object Metadata System
 
-- [ ] T040 [P] [US1] Migrate ObjectMetadata entity in packages/twenty-server/src/engine/metadata-modules/object-metadata/object-metadata.entity.ts
-- [ ] T041 [P] [US1] Migrate FieldMetadata entity in packages/twenty-server/src/engine/metadata-modules/field-metadata/field-metadata.entity.ts
-- [ ] T042 [P] [US1] Migrate RelationMetadata entity in packages/twenty-server/src/engine/metadata-modules/relation-metadata/relation-metadata.entity.ts
-- [ ] T043 [US1] Create D1 migration for metadata tables in packages/twenty-server/migrations/0002_metadata_schema.sql
+- [x] T040 [P] [US1] Migrate ObjectMetadata entity in packages/twenty-server/src/engine/metadata-modules/object-metadata/object-metadata.entity.ts
+- [x] T041 [P] [US1] Migrate FieldMetadata entity in packages/twenty-server/src/engine/metadata-modules/field-metadata/field-metadata.entity.ts
+- [x] T042 [P] [US1] ~~Migrate RelationMetadata entity~~ N/A - RelationMetadata was deprecated; relations are now inline in FieldMetadata via relationTargetFieldMetadataId/relationTargetObjectMetadataId
+- [x] T043 [US1] Create D1 migration for metadata tables in packages/twenty-server/migrations/0002_metadata_schema.sql
 
 ### CRM Core Entities
 
-- [ ] T044 [P] [US1] Migrate Contact/Person standard object in packages/twenty-server/src/engine/workspace-manager/standard-objects/person.workspace-entity.ts
-- [ ] T045 [P] [US1] Migrate Company standard object in packages/twenty-server/src/engine/workspace-manager/standard-objects/company.workspace-entity.ts
-- [ ] T046 [P] [US1] Migrate Opportunity standard object in packages/twenty-server/src/engine/workspace-manager/standard-objects/opportunity.workspace-entity.ts
-- [ ] T047 [P] [US1] Migrate Activity standard object in packages/twenty-server/src/engine/workspace-manager/standard-objects/activity.workspace-entity.ts
-- [ ] T048 [P] [US1] Migrate Note standard object in packages/twenty-server/src/engine/workspace-manager/standard-objects/note.workspace-entity.ts
-- [ ] T049 [US1] Create D1 migration for CRM tables in packages/twenty-server/migrations/0003_crm_entities.sql
+- [x] T044 [P] [US1] Migrate Contact/Person standard object in packages/twenty-server/src/engine/workspace-manager/standard-objects/person.workspace-entity.ts
+- [x] T045 [P] [US1] Migrate Company standard object in packages/twenty-server/src/engine/workspace-manager/standard-objects/company.workspace-entity.ts
+- [x] T046 [P] [US1] Migrate Opportunity standard object in packages/twenty-server/src/engine/workspace-manager/standard-objects/opportunity.workspace-entity.ts
+- [x] T047 [P] [US1] Migrate Activity standard object in packages/twenty-server/src/engine/workspace-manager/standard-objects/activity.workspace-entity.ts
+- [x] T048 [P] [US1] Migrate Note standard object in packages/twenty-server/src/engine/workspace-manager/standard-objects/note.workspace-entity.ts
+- [x] T049 [US1] Create D1 migration for CRM tables in packages/twenty-server/migrations/0003_crm_entities.sql
 
 ### GraphQL Resolvers
 

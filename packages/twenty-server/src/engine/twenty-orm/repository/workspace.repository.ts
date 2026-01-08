@@ -952,7 +952,10 @@ export class WorkspaceRepository<
     U extends FindManyOptions<T> | FindOneOptions<T> | undefined,
   >(options: U): Promise<U> {
     if (!options) {
-      return options;
+      // For D1, even with no options we need workspace scoping
+      return this.applyWorkspaceScope(
+        {} as FindManyOptions<T>,
+      ) as unknown as Promise<U>;
     }
 
     const transformedOptions = { ...options };
@@ -963,7 +966,58 @@ export class WorkspaceRepository<
       transformedOptions.withDeleted = true;
     }
 
-    return transformedOptions;
+    // Apply workspace scoping for D1 (single DB with workspaceId filtering)
+    return this.applyWorkspaceScope(
+      transformedOptions as FindManyOptions<T>,
+    ) as unknown as U;
+  }
+
+  /**
+   * Apply workspace scoping for D1/SQLite environments
+   *
+   * In PostgreSQL, isolation is achieved via per-workspace schemas.
+   * In D1/SQLite, we use workspaceId column filtering instead.
+   */
+  private applyWorkspaceScope<U extends FindManyOptions<T> | FindOneOptions<T>>(
+    options: U,
+  ): U {
+    // Dynamic import to avoid issues in environments where this isn't available
+    const {
+      isD1Environment,
+    } = require('src/database/typeorm/d1/is-d1-environment.util');
+
+    // Skip for PostgreSQL (uses schema-based isolation)
+    if (!isD1Environment()) {
+      return options;
+    }
+
+    const workspaceId = this.internalContext.workspaceId;
+
+    if (!workspaceId) {
+      return options;
+    }
+
+    const scopedOptions = { ...options } as FindManyOptions<T>;
+
+    if (!scopedOptions.where) {
+      scopedOptions.where = {
+        workspaceId,
+      } as unknown as FindOptionsWhere<T>;
+    } else if (Array.isArray(scopedOptions.where)) {
+      // Multiple where conditions - add workspaceId to each
+      scopedOptions.where = scopedOptions.where.map((condition) => ({
+        ...condition,
+        workspaceId,
+      })) as FindOptionsWhere<T>[];
+    } else {
+      // Single where condition
+      scopedOptions.where = {
+        ...scopedOptions.where,
+        workspaceId,
+      } as FindOptionsWhere<T>;
+    }
+
+    return scopedOptions as U;
   }
 
   private async formatData<T>(data: T): Promise<T> {

@@ -62,10 +62,10 @@ export class FieldMetadataEntity<
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column({ nullable: true, type: 'uuid' })
+  @Column({ nullable: true })
   standardId: string | null;
 
-  @Column({ nullable: false, type: 'uuid' })
+  @Column({ nullable: false })
   objectMetadataId: string;
 
   @ManyToOne(() => ObjectMetadataEntity, (object) => object.fields, {
@@ -88,7 +88,7 @@ export class FieldMetadataEntity<
   @Column({ nullable: false })
   label: string;
 
-  @Column({ nullable: true, type: 'jsonb' })
+  @Column({ nullable: true, type: 'simple-json' })
   defaultValue: FieldMetadataDefaultValue<TFieldMetadataType>;
 
   @Column({ nullable: true, type: 'text' })
@@ -97,13 +97,13 @@ export class FieldMetadataEntity<
   @Column({ nullable: true, type: 'varchar' })
   icon: string | null;
 
-  @Column({ type: 'jsonb', nullable: true })
+  @Column({ type: 'simple-json', nullable: true })
   standardOverrides: FieldStandardOverridesDTO | null;
 
-  @Column('jsonb', { nullable: true })
+  @Column('simple-json', { nullable: true })
   options: FieldMetadataOptions<TFieldMetadataType>;
 
-  @Column('jsonb', { nullable: true })
+  @Column('simple-json', { nullable: true })
   settings: FieldMetadataSettings<TFieldMetadataType>;
 
   @Column({ default: false })
@@ -129,7 +129,7 @@ export class FieldMetadataEntity<
   @Column({ default: false })
   isLabelSyncedWithName: boolean;
 
-  @Column({ nullable: true, type: 'uuid' })
+  @Column({ nullable: true })
   relationTargetFieldMetadataId: AssignTypeIfIsMorphOrRelationFieldMetadataType<
     string,
     TFieldMetadataType
@@ -146,7 +146,7 @@ export class FieldMetadataEntity<
     TFieldMetadataType
   >;
 
-  @Column({ nullable: true, type: 'uuid' })
+  @Column({ nullable: true })
   relationTargetObjectMetadataId: AssignTypeIfIsMorphOrRelationFieldMetadataType<
     string,
     TFieldMetadataType
@@ -163,7 +163,7 @@ export class FieldMetadataEntity<
     TFieldMetadataType
   >;
 
-  @Column({ nullable: true, type: 'uuid' })
+  @Column({ nullable: true })
   morphId: AssignIfIsGivenFieldMetadataType<
     string,
     TFieldMetadataType,
@@ -179,10 +179,10 @@ export class FieldMetadataEntity<
   )
   indexFieldMetadatas: Relation<IndexFieldMetadataEntity[]>;
 
-  @CreateDateColumn({ type: 'timestamptz' })
+  @CreateDateColumn()
   createdAt: Date;
 
-  @UpdateDateColumn({ type: 'timestamptz' })
+  @UpdateDateColumn()
   updatedAt: Date;
 
   @OneToMany(

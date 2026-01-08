@@ -1,7 +1,8 @@
 import { Injectable } from '@nestjs/common';
 
-import { EntitySchema } from 'typeorm';
+import { EntitySchema, type EntitySchemaOptions } from 'typeorm';
 
+import { supportsDatabaseSchemas } from 'src/database/typeorm/d1/is-d1-environment.util';
 import { EntitySchemaColumnFactory } from 'src/engine/twenty-orm/factories/entity-schema-column.factory';
 import { EntitySchemaRelationFactory } from 'src/engine/twenty-orm/factories/entity-schema-relation.factory';
 import {
@@ -36,9 +37,10 @@ export class EntitySchemaFactory {
       fieldMetadataMaps,
     );
 
-    const schemaName = getWorkspaceSchemaName(workspaceId);
-
-    const entitySchema = new EntitySchema({
+    // Build entity schema options
+    // For D1/SQLite: no schema property (single DB with workspaceId column scoping)
+    // For PostgreSQL: use per-workspace schema
+    const entitySchemaOptions: EntitySchemaOptions<object> = {
       name: objectMetadata.nameSingular,
       tableName: computeTableName(
         objectMetadata.nameSingular,
@@ -46,8 +48,14 @@ export class EntitySchemaFactory {
       ),
       columns,
       relations,
-      schema: schemaName,
-    });
+    };
+
+    // Only add schema for PostgreSQL (not D1/SQLite)
+    if (supportsDatabaseSchemas()) {
+      entitySchemaOptions.schema = getWorkspaceSchemaName(workspaceId);
+    }
+
+    const entitySchema = new EntitySchema(entitySchemaOptions);
 
     return entitySchema;
   }

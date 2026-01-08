@@ -35,7 +35,7 @@ registerEnumType(PermissionsOnAllObjectRecords, {
   name: 'PermissionsOnAllObjectRecords',
 });
 
-@Entity({ name: 'userWorkspace', schema: 'core' })
+@Entity({ name: 'userWorkspace' })
 @ObjectType('UserWorkspace')
 @Index(
   'IDX_USER_WORKSPACE_USER_ID_WORKSPACE_ID_UNIQUE',
@@ -71,15 +71,15 @@ export class UserWorkspaceEntity extends WorkspaceRelatedEntity {
   locale: keyof typeof APP_LOCALES;
 
   @Field()
-  @CreateDateColumn({ type: 'timestamptz' })
+  @CreateDateColumn()
   createdAt: Date;
 
   @Field()
-  @UpdateDateColumn({ type: 'timestamptz' })
+  @UpdateDateColumn()
   updatedAt: Date;
 
   @Field({ nullable: true })
-  @DeleteDateColumn({ type: 'timestamptz' })
+  @DeleteDateColumn()
   deletedAt: Date;
 
   @OneToMany(

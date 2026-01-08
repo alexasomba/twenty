@@ -60,7 +60,7 @@ registerEnumType(WorkspaceActivationStatus, {
   'onboarded_workspace_requires_default_role',
   `"activationStatus" IN ('PENDING_CREATION', 'ONGOING_CREATION') OR "defaultRoleId" IS NOT NULL`,
 )
-@Entity({ name: 'workspace', schema: 'core' })
+@Entity({ name: 'workspace' })
 @ObjectType('Workspace')
 export class WorkspaceEntity {
   // Fields
@@ -81,15 +81,15 @@ export class WorkspaceEntity {
   inviteHash?: string;
 
   @Field({ nullable: true })
-  @DeleteDateColumn({ type: 'timestamptz' })
+  @DeleteDateColumn()
   deletedAt?: Date;
 
   @Field()
-  @CreateDateColumn({ type: 'timestamptz' })
+  @CreateDateColumn()
   createdAt: Date;
 
   @Field()
-  @UpdateDateColumn({ type: 'timestamptz' })
+  @UpdateDateColumn()
   updatedAt: Date;
 
   @Field()
@@ -151,8 +151,7 @@ export class WorkspaceEntity {
 
   @Field(() => WorkspaceActivationStatus)
   @Column({
-    type: 'enum',
-    enumName: 'workspace_activationStatus_enum',
+    type: 'simple-enum',
     enum: WorkspaceActivationStatus,
     default: WorkspaceActivationStatus.INACTIVE,
   })
@@ -263,15 +262,14 @@ export class WorkspaceEntity {
 
   @Field(() => [String], { nullable: true })
   @Column({
-    type: 'varchar',
-    array: true,
+    type: 'simple-json',
     nullable: true,
-    default: '{email,profilePicture,firstName,lastName}',
+    default: '["email","profilePicture","firstName","lastName"]',
   })
   editableProfileFields: string[] | null;
 
   // TODO: set as non nullable
-  @Column({ nullable: true, type: 'uuid' })
+  @Column({ nullable: true })
   defaultRoleId: string | null;
 
   @Field(() => RoleDTO, { nullable: true })
@@ -289,7 +287,7 @@ export class WorkspaceEntity {
   @Column({ type: 'varchar', nullable: false, default: DEFAULT_SMART_MODEL })
   smartModel: ModelId;
 
-  @Column({ nullable: false, type: 'uuid' })
+  @Column({ nullable: false })
   workspaceCustomApplicationId: string;
 
   // TODO: delete

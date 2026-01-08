@@ -11,6 +11,18 @@
 #
 # DO NOT commit .dev.vars or .dev.vars.* to version control!
 
+# Cloudflare resource IDs
+# These are required because wrangler.jsonc references them via ${...} placeholders.
+# You can find these IDs via:
+#   npx wrangler d1 list
+#   npx wrangler kv namespace list
+D1_DATABASE_ID=replace_me_with_d1_uuid
+D1_PREVIEW_DATABASE_ID=replace_me_with_d1_preview_uuid
+KV_CACHE_NAMESPACE_ID=replace_me_with_kv_id
+KV_CACHE_PREVIEW_ID=replace_me_with_kv_preview_id
+KV_SESSION_NAMESPACE_ID=replace_me_with_kv_id
+KV_SESSION_PREVIEW_ID=replace_me_with_kv_preview_id
+
 # JWT Configuration
 JWT_SECRET=your-development-jwt-secret-min-32-chars
 JWT_REFRESH_SECRET=your-development-refresh-secret-min-32-chars

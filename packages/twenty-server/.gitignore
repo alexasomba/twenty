@@ -13,3 +13,6 @@ logs/**/*
 
 # Wrangler local state
 .wrangler/
+
+# Local-only Wrangler config overrides (resource IDs)
+wrangler.local.jsonc

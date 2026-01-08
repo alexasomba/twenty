@@ -36,10 +36,10 @@ export class ObjectMetadataEntity
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column({ nullable: true, type: 'uuid' })
+  @Column({ nullable: true })
   standardId: string | null;
 
-  @Column({ nullable: false, type: 'uuid' })
+  @Column({ nullable: false })
   dataSourceId: string;
 
   @Column({ nullable: false })
@@ -60,7 +60,7 @@ export class ObjectMetadataEntity
   @Column({ nullable: true, type: 'varchar' })
   icon: string | null;
 
-  @Column({ type: 'jsonb', nullable: true })
+  @Column({ type: 'simple-json', nullable: true })
   standardOverrides: ObjectStandardOverridesDTO | null;
 
   /**
@@ -90,17 +90,17 @@ export class ObjectMetadataEntity
   @Column({ default: false })
   isSearchable: boolean;
 
-  @Column({ type: 'jsonb', nullable: true })
+  @Column({ type: 'simple-json', nullable: true })
   duplicateCriteria: WorkspaceEntityDuplicateCriteria[] | null;
 
   @Column({ nullable: true, type: 'varchar' })
   shortcut: string | null;
 
   // TODO: This should not be nullable - legacy field introduced when label identifier was nullable
-  @Column({ nullable: true, type: 'uuid' })
+  @Column({ nullable: true })
   labelIdentifierFieldMetadataId: string | null;
 
-  @Column({ nullable: true, type: 'uuid' })
+  @Column({ nullable: true })
   imageIdentifierFieldMetadataId: string | null;
 
   @Column({ default: false })
@@ -127,10 +127,10 @@ export class ObjectMetadataEntity
   })
   dataSource: Relation<DataSourceEntity>;
 
-  @CreateDateColumn({ type: 'timestamptz' })
+  @CreateDateColumn()
   createdAt: Date;
 
-  @UpdateDateColumn({ type: 'timestamptz' })
+  @UpdateDateColumn()
   updatedAt: Date;
 
   @OneToMany(
