@@ -11,6 +11,9 @@
     "worker:prod": "node dist/queue-worker/queue-worker",
     "generate:worker-types": "wrangler types",
     "typecheck:worker": "yarn generate:worker-types && npx tsc -p tsconfig.worker.json",
+    "build:worker": "node esbuild.worker.mjs",
+    "build:worker:watch": "node esbuild.worker.mjs --watch",
+    "dev:worker": "yarn build:worker && wrangler dev --config wrangler.local.jsonc --local",
     "database:init:prod": "npx ts-node ./scripts/setup-db.ts && yarn database:migrate:prod",
     "database:migrate:prod": "npx -y typeorm migration:run -d dist/database/typeorm/core/core.datasource",
     "clickhouse:migrate:prod": "node dist/database/clickHouse/migrations/run-migrations.js",
@@ -181,7 +184,6 @@
     "zod": "^4.1.11"
   },
   "devDependencies": {
-    "@cloudflare/workers-types": "^4.20260108.0",
     "@faker-js/faker": "^9.8.0",
     "@lingui/cli": "^5.1.2",
     "@nestjs/cli": "11.0.10",

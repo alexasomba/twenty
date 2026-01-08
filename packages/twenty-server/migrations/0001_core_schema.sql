@@ -115,3 +115,41 @@ CREATE INDEX IF NOT EXISTS IDX_USER_WORKSPACE_USER_ID
 
 CREATE INDEX IF NOT EXISTS IDX_USER_WORKSPACE_WORKSPACE_ID
   ON userWorkspace(workspaceId);
+
+-- -----------------------------------------------------------------------------
+-- workspaceMember (workspace member data - CRM-specific member metadata)
+-- -----------------------------------------------------------------------------
+
+CREATE TABLE IF NOT EXISTS workspaceMember (
+  id TEXT PRIMARY KEY,
+  workspaceId TEXT NOT NULL,
+  userId TEXT NOT NULL,
+
+  -- Member profile within workspace
+  name TEXT, -- JSON: {firstName, lastName}
+  userEmail TEXT,
+  avatarUrl TEXT,
+  locale TEXT NOT NULL DEFAULT 'en',
+  colorScheme TEXT NOT NULL DEFAULT 'Light',
+  dateFormat TEXT NOT NULL DEFAULT 'MONTH_FIRST',
+  timeFormat TEXT NOT NULL DEFAULT 'HOUR_24',
+  timeZone TEXT NOT NULL DEFAULT 'UTC',
+
+  -- Audit columns
+  createdAt TEXT NOT NULL DEFAULT (CURRENT_TIMESTAMP),
+  updatedAt TEXT NOT NULL DEFAULT (CURRENT_TIMESTAMP),
+  deletedAt TEXT,
+
+  FOREIGN KEY (userId) REFERENCES "user"(id) ON DELETE CASCADE,
+  FOREIGN KEY (workspaceId) REFERENCES workspace(id) ON DELETE CASCADE
+);
+
+CREATE UNIQUE INDEX IF NOT EXISTS IDX_WORKSPACE_MEMBER_USER_WORKSPACE
+  ON workspaceMember(userId, workspaceId)
+  WHERE deletedAt IS NULL;
+
+CREATE INDEX IF NOT EXISTS IDX_WORKSPACE_MEMBER_WORKSPACE
+  ON workspaceMember(workspaceId);
+
+CREATE INDEX IF NOT EXISTS IDX_WORKSPACE_MEMBER_USER_EMAIL
+  ON workspaceMember(userEmail);

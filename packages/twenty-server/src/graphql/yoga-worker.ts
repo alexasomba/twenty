@@ -11,13 +11,10 @@ import { createSchema, createYoga } from 'graphql-yoga';
 
 import type { GraphQLSchema } from 'graphql';
 
-import {
-  createGraphQLContext,
-  type GraphQLContext,
-  type RequestContext,
-} from 'src/core/context-factory';
+import { type RequestContext } from 'src/core/context-factory';
 // Env type is globally available from worker-configuration.d.ts
 
+import { createWorkspaceSchema, type D1GraphQLContext } from './schema-builder';
 import {
   createConfigFromEnv,
   getPlugins,
@@ -45,7 +42,7 @@ export const createYogaWorker = (
   schema: GraphQLSchema,
   config?: Partial<YogaWorkerConfig>,
 ) => {
-  return createYoga<YogaServerContext, GraphQLContext>({
+  return createYoga<YogaServerContext, D1GraphQLContext>({
     schema,
     graphqlEndpoint: '/graphql',
     landingPage: false, // Disable default landing page
@@ -66,13 +63,16 @@ export const createYogaWorker = (
       request: Request;
       requestContext: RequestContext;
       env: Env;
-    }): Promise<GraphQLContext> => {
-      const { requestContext } = params;
+    }): Promise<D1GraphQLContext> => {
+      const { requestContext, env } = params;
 
-      // Create GraphQL context from request context
-      const graphqlContext = createGraphQLContext(requestContext);
-
-      return graphqlContext;
+      // Create D1-compatible GraphQL context
+      return {
+        workspaceId: requestContext.workspaceId || '',
+        userId: requestContext.userId,
+        db: env.DB,
+        requestId: requestContext.requestId,
+      };
     },
     fetchAPI: {
       // Use native Web APIs in Workers environment
@@ -110,9 +110,9 @@ export const createGraphQLHandler = (yoga: YogaWorkerInstance) => {
 };
 
 /**
- * Placeholder schema for initial setup
+ * Placeholder schema for initial setup (fallback)
  *
- * This will be replaced with the actual schema loaded from workspace metadata.
+ * Used if workspace schema creation fails.
  */
 export const createPlaceholderSchema = (): GraphQLSchema => {
   return createSchema({
@@ -149,14 +149,16 @@ export const createPlaceholderSchema = (): GraphQLSchema => {
 };
 
 /**
- * Initialize the default Yoga instance with placeholder schema
+ * Initialize the Yoga instance with workspace schema
+ *
+ * Creates a full GraphQL schema with CRUD resolvers for all standard objects.
  */
 export const initializeYoga = (env: Env): YogaWorkerInstance => {
   // Access optional env vars safely using type assertion for optional config
   const optionalEnv = env as unknown as Record<string, string | undefined>;
   const maxFields = optionalEnv.GRAPHQL_MAX_FIELDS ?? '100';
   const maxRootResolvers = optionalEnv.GRAPHQL_MAX_ROOT_RESOLVERS ?? '20';
-  const enableGraphiql = optionalEnv.ENABLE_GRAPHIQL ?? 'false';
+  const enableGraphiql = optionalEnv.ENABLE_GRAPHIQL ?? 'true'; // Enable by default for dev
   const environment = env.ENVIRONMENT ?? 'development';
 
   const config = createConfigFromEnv({
@@ -166,7 +168,18 @@ export const initializeYoga = (env: Env): YogaWorkerInstance => {
     ENVIRONMENT: environment,
   });
 
-  const schema = createPlaceholderSchema();
+  // Create the workspace schema with D1 resolvers
+  let schema: GraphQLSchema;
+
+  try {
+    schema = createWorkspaceSchema() as unknown as GraphQLSchema;
+  } catch (error) {
+    console.error(
+      'Failed to create workspace schema, using placeholder:',
+      error,
+    );
+    schema = createPlaceholderSchema();
+  }
 
   return createYogaWorker(schema, config);
 };

@@ -16,6 +16,7 @@ import { initializeYoga } from 'src/graphql/yoga-worker';
 import { corsMiddleware } from './middleware/cors.middleware';
 import { errorMiddleware } from './middleware/error.middleware';
 import { loggingMiddleware } from './middleware/logging.middleware';
+import { workspaceMiddleware } from './middleware/workspace.middleware';
 import { healthRoute } from './routes/health.route';
 
 /**
@@ -54,14 +55,21 @@ export const createRouter = (): Hono<HonoEnv> => {
   // Routes
   // ============================================================================
 
-  // Health check endpoints
+  // Health check endpoints (no auth required)
   app.route('/health', healthRoute);
   app.get('/healthz', (c) => c.json({ status: 'ok' }));
 
-  // GraphQL endpoint
-  app.all('/graphql', async (c) => {
+  // GraphQL endpoint with workspace context
+  app.all('/graphql', workspaceMiddleware, async (c) => {
     const requestId = c.get('requestId') || crypto.randomUUID();
+    const workspaceId = c.get('workspaceId');
+    const userId = c.get('userId');
+
     const requestContext = createRequestContext(requestId, c.env);
+
+    // Add workspace context to request context
+    requestContext.workspaceId = workspaceId;
+    requestContext.userId = userId;
 
     // Initialize Yoga with environment configuration
     const yoga = initializeYoga(c.env);

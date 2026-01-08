@@ -121,15 +121,15 @@
 
 ### GraphQL Resolvers
 
-- [ ] T050 [US1] Port object record resolver to use D1 in packages/twenty-server/src/engine/api/graphql/workspace-resolver-builder/
-- [ ] T051 [US1] Port search resolver to use LIKE with COLLATE NOCASE in packages/twenty-server/src/engine/api/graphql/workspace-query-runner/
-- [ ] T052 [US1] Port create/update/delete mutations to D1 in packages/twenty-server/src/engine/api/graphql/workspace-resolver-builder/
+- [x] T050 [US1] Port object record resolver to use D1 in packages/twenty-server/src/graphql/resolvers/object-record-resolver.ts
+- [x] T051 [US1] Port search resolver to use LIKE with COLLATE NOCASE in packages/twenty-server/src/graphql/resolvers/search-resolver.ts
+- [x] T052 [US1] Port create/update/delete mutations to D1 in packages/twenty-server/src/graphql/resolvers/object-record-resolver.ts
 
 ### Integration
 
-- [ ] T053 [US1] Wire up GraphQL schema with D1-connected resolvers in packages/twenty-server/src/graphql/yoga-worker.ts
-- [ ] T054 [US1] Add workspace context middleware (extract workspace from token) in packages/twenty-server/src/router/middleware/workspace.middleware.ts
-- [ ] T055 [US1] Verify CRUD operations work end-to-end via local Wrangler dev
+- [x] T053 [US1] Wire up GraphQL schema with D1-connected resolvers in packages/twenty-server/src/graphql/schema-builder.ts
+- [x] T054 [US1] Add workspace context middleware (extract workspace from token) in packages/twenty-server/src/router/middleware/workspace.middleware.ts
+- [x] T055 [US1] Verify CRUD operations work end-to-end via local Wrangler dev
 
 **Checkpoint**: US1 complete - CRM CRUD operations work on D1
 

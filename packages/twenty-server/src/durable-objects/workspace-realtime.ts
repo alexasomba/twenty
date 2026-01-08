@@ -7,6 +7,8 @@
  * @see https://developers.cloudflare.com/durable-objects/
  */
 
+import { DurableObject } from 'cloudflare:workers';
+
 // Env type is globally available from worker-configuration.d.ts
 
 /**
@@ -29,9 +31,9 @@ export type WebSocketMessage = {
  * WorkspaceRealtimeHub Durable Object
  *
  * Handles WebSocket connections and broadcasts for a single workspace.
- * Extends CloudflareWorkersModule.DurableObject base class for proper hibernation support.
+ * Extends DurableObject base class for proper hibernation support.
  */
-export class WorkspaceRealtimeHub extends CloudflareWorkersModule.DurableObject<Env> {
+export class WorkspaceRealtimeHub extends DurableObject<Env> {
   private sessions: Map<WebSocket, Set<string>> = new Map();
 
   /**

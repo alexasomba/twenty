@@ -46,6 +46,10 @@ export interface RequestContext {
   workspace?: WorkspaceContext;
   user?: UserContext;
 
+  // Workspace and user IDs (set by workspace middleware)
+  workspaceId?: string;
+  userId?: string;
+
   // Services (lazy-loaded)
   readonly logger: ReturnType<typeof createRequestLogger>;
 }
