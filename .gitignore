@@ -49,3 +49,9 @@ dump.rdb
 mcp.json
 /.junie/
 TRANSLATION_QA_REPORT.md
+
+.github/instructions
+AGENTS.md
+.github/agents
+.github/prompts
+.specify

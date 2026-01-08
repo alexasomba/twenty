@@ -27,15 +27,15 @@
 
 **Purpose**: Project initialization, tooling, and Cloudflare resources
 
-- [ ] T001 Create wrangler.jsonc configuration in packages/twenty-server/wrangler.jsonc per contracts/api-contracts.md
-- [ ] T002 [P] Add Cloudflare Workers TypeScript types to packages/twenty-server/package.json
-- [ ] T003 [P] Create worker entry point stub in packages/twenty-server/src/worker.ts
-- [ ] T004 [P] Create .dev.vars template for local secrets in packages/twenty-server/.dev.vars.example
+- [x] T001 Create wrangler.jsonc configuration in packages/twenty-server/wrangler.jsonc per contracts/api-contracts.md
+- [x] T002 [P] Add Cloudflare Workers TypeScript types to packages/twenty-server/package.json
+- [x] T003 [P] Create worker entry point stub in packages/twenty-server/src/worker.ts
+- [x] T004 [P] Create .dev.vars template for local secrets in packages/twenty-server/.dev.vars.example
 - [ ] T005 Create D1 database via `wrangler d1 create twenty-crm-core`
 - [ ] T006 [P] Create KV namespaces for CACHE_STORE and SESSION_STORE via wrangler CLI
 - [ ] T007 [P] Create R2 bucket `twenty-crm-files` via wrangler CLI
 - [ ] T008 [P] Create Cloudflare Queues (twenty-critical, twenty-workflow, twenty-messaging, twenty-background, twenty-dlq) via wrangler CLI
-- [ ] T009 Configure Nx build target for Worker bundle in packages/twenty-server/project.json
+- [x] T009 Configure Nx build target for Worker bundle in packages/twenty-server/project.json
 
 ---
 
@@ -47,44 +47,44 @@
 
 ### Database Foundation
 
-- [ ] T010 Create D1 value transformers directory in packages/twenty-server/src/database/typeorm/d1/transformers/
-- [ ] T011 [P] Implement JSON transformer in packages/twenty-server/src/database/typeorm/d1/transformers/json.transformer.ts per data-model.md
-- [ ] T012 [P] Implement Array transformer in packages/twenty-server/src/database/typeorm/d1/transformers/array.transformer.ts per data-model.md
-- [ ] T013 [P] Implement Timestamp transformer in packages/twenty-server/src/database/typeorm/d1/transformers/timestamp.transformer.ts per data-model.md
-- [ ] T014 [P] Implement Boolean transformer in packages/twenty-server/src/database/typeorm/d1/transformers/boolean.transformer.ts per data-model.md
-- [ ] T015 Create transformer barrel export in packages/twenty-server/src/database/typeorm/d1/transformers/index.ts
-- [ ] T016 Create D1 datasource configuration in packages/twenty-server/src/database/typeorm/d1/d1.datasource.ts
-- [ ] T017 Implement D1 connection adapter in packages/twenty-server/src/database/typeorm/d1/d1-driver.adapter.ts
+- [x] T010 Create D1 value transformers directory in packages/twenty-server/src/database/typeorm/d1/transformers/
+- [x] T011 [P] Implement JSON transformer in packages/twenty-server/src/database/typeorm/d1/transformers/json.transformer.ts per data-model.md
+- [x] T012 [P] Implement Array transformer in packages/twenty-server/src/database/typeorm/d1/transformers/array.transformer.ts per data-model.md
+- [x] T013 [P] Implement Timestamp transformer in packages/twenty-server/src/database/typeorm/d1/transformers/timestamp.transformer.ts per data-model.md
+- [x] T014 [P] Implement Boolean transformer in packages/twenty-server/src/database/typeorm/d1/transformers/boolean.transformer.ts per data-model.md
+- [x] T015 Create transformer barrel export in packages/twenty-server/src/database/typeorm/d1/transformers/index.ts
+- [x] T016 Create D1 datasource configuration in packages/twenty-server/src/database/typeorm/d1/d1.datasource.ts
+- [x] T017 Implement D1 connection adapter in packages/twenty-server/src/database/typeorm/d1/d1-driver.adapter.ts
 
 ### Query Compatibility Layer
 
-- [ ] T018 Create query helpers directory in packages/twenty-server/src/database/typeorm/d1/query-helpers/
-- [ ] T019 [P] Implement JSONB query helper (json_extract) in packages/twenty-server/src/database/typeorm/d1/query-helpers/jsonb.helper.ts
-- [ ] T020 [P] Implement Array query helper in packages/twenty-server/src/database/typeorm/d1/query-helpers/array.helper.ts
-- [ ] T021 [P] Implement case-insensitive LIKE helper in packages/twenty-server/src/database/typeorm/d1/query-helpers/like.helper.ts
-- [ ] T022 Create query helper barrel export in packages/twenty-server/src/database/typeorm/d1/query-helpers/index.ts
+- [x] T018 Create query helpers directory in packages/twenty-server/src/database/typeorm/d1/query-helpers/
+- [x] T019 [P] Implement JSONB query helper (json_extract) in packages/twenty-server/src/database/typeorm/d1/query-helpers/jsonb.helper.ts
+- [x] T020 [P] Implement Array query helper in packages/twenty-server/src/database/typeorm/d1/query-helpers/array.helper.ts
+- [x] T021 [P] Implement case-insensitive LIKE helper in packages/twenty-server/src/database/typeorm/d1/query-helpers/like.helper.ts
+- [x] T022 Create query helper barrel export in packages/twenty-server/src/database/typeorm/d1/query-helpers/index.ts
 
 ### Worker Framework
 
-- [ ] T023 Install Hono framework in packages/twenty-server/package.json
-- [ ] T024 Create Hono router setup in packages/twenty-server/src/router/index.ts
-- [ ] T025 [P] Create middleware for CORS handling in packages/twenty-server/src/router/middleware/cors.middleware.ts
-- [ ] T026 [P] Create middleware for request logging in packages/twenty-server/src/router/middleware/logging.middleware.ts
-- [ ] T027 [P] Create middleware for error handling in packages/twenty-server/src/router/middleware/error.middleware.ts
-- [ ] T028 Create WorkerEnv types in packages/twenty-server/src/types/worker-env.ts per contracts/api-contracts.md
-- [ ] T029 Create context factory for Worker bindings in packages/twenty-server/src/context/worker-context.factory.ts
+- [x] T023 Install Hono framework in packages/twenty-server/package.json
+- [x] T024 Create Hono router setup in packages/twenty-server/src/router/index.ts
+- [x] T025 [P] Create middleware for CORS handling in packages/twenty-server/src/router/middleware/cors.middleware.ts
+- [x] T026 [P] Create middleware for request logging in packages/twenty-server/src/router/middleware/logging.middleware.ts
+- [x] T027 [P] Create middleware for error handling in packages/twenty-server/src/router/middleware/error.middleware.ts
+- [x] T028 Create WorkerEnv types in packages/twenty-server/src/types/worker-env.ts per contracts/api-contracts.md
+- [x] T029 Create context factory for Worker bindings in packages/twenty-server/src/core/context-factory.ts
 
 ### GraphQL Setup
 
-- [ ] T030 Extract GraphQL Yoga configuration from NestJS driver to packages/twenty-server/src/graphql/yoga-config.ts
-- [ ] T031 Create GraphQL handler for Worker in packages/twenty-server/src/graphql/yoga-worker.ts per contracts/api-contracts.md
-- [ ] T032 Integrate GraphQL route with Hono router in packages/twenty-server/src/router/index.ts
+- [x] T030 Extract GraphQL Yoga configuration from NestJS driver to packages/twenty-server/src/graphql/yoga-config.ts
+- [x] T031 Create GraphQL handler for Worker in packages/twenty-server/src/graphql/yoga-worker.ts per contracts/api-contracts.md
+- [x] T032 Integrate GraphQL route with Hono router in packages/twenty-server/src/router/index.ts
 
 ### Health & Utilities
 
-- [ ] T033 [P] Create health check endpoint in packages/twenty-server/src/router/routes/health.route.ts
-- [ ] T034 [P] Create structured JSON logger utility in packages/twenty-server/src/utils/logger.ts per contracts/api-contracts.md
-- [ ] T035 Complete worker.ts entry point with all bindings in packages/twenty-server/src/worker.ts
+- [x] T033 [P] Create health check endpoint in packages/twenty-server/src/router/routes/health.route.ts
+- [x] T034 [P] Create structured JSON logger utility in packages/twenty-server/src/core/logger.ts per contracts/api-contracts.md
+- [x] T035 Complete worker.ts entry point with all bindings in packages/twenty-server/src/worker.ts
 
 **Checkpoint**: Foundation ready - Worker builds and serves /health endpoint
 

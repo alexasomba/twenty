@@ -1,0 +1,152 @@
+{
+  "$schema": "../../node_modules/wrangler/config-schema.json",
+  "name": "twenty-crm-api",
+  "main": "dist-worker/worker.js",
+  "compatibility_date": "2026-01-01",
+  // nodejs_compat enables Node.js APIs; nodejs_compat_populate_process_env is enabled
+  // by default for compatibility_date >= 2025-04-01, making env vars available via process.env
+  "compatibility_flags": ["nodejs_compat"],
+  "workers_dev": true,
+
+  // Smart Placement: run Worker closer to D1 database to reduce latency
+  "placement": {
+    "mode": "smart",
+  },
+
+  // D1 Database Bindings
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "twenty-crm-core",
+      "database_id": "${D1_DATABASE_ID}",
+      "preview_database_id": "${D1_PREVIEW_DATABASE_ID}",
+      "migrations_dir": "./migrations/d1",
+    },
+  ],
+
+  // KV Namespace Bindings
+  "kv_namespaces": [
+    {
+      "binding": "CACHE_STORE",
+      "id": "${KV_CACHE_NAMESPACE_ID}",
+      "preview_id": "${KV_CACHE_PREVIEW_ID}",
+    },
+    {
+      "binding": "SESSION_STORE",
+      "id": "${KV_SESSION_NAMESPACE_ID}",
+      "preview_id": "${KV_SESSION_PREVIEW_ID}",
+    },
+  ],
+
+  // R2 Bucket Bindings
+  "r2_buckets": [
+    {
+      "binding": "FILES",
+      "bucket_name": "twenty-crm-files",
+    },
+  ],
+
+  // Queue Producer Bindings
+  "queues": {
+    "producers": [
+      {
+        "binding": "CRITICAL_QUEUE",
+        "queue": "twenty-critical",
+      },
+      {
+        "binding": "WORKFLOW_QUEUE",
+        "queue": "twenty-workflow",
+      },
+      {
+        "binding": "MESSAGING_QUEUE",
+        "queue": "twenty-messaging",
+      },
+      {
+        "binding": "BACKGROUND_QUEUE",
+        "queue": "twenty-background",
+      },
+    ],
+    "consumers": [
+      {
+        "queue": "twenty-critical",
+        "max_batch_size": 10,
+        "max_batch_timeout": 5,
+        "max_retries": 3,
+        "dead_letter_queue": "twenty-dlq",
+      },
+      {
+        "queue": "twenty-workflow",
+        "max_batch_size": 50,
+        "max_batch_timeout": 30,
+        "max_retries": 5,
+      },
+      {
+        "queue": "twenty-messaging",
+        "max_batch_size": 25,
+        "max_batch_timeout": 10,
+        "max_retries": 3,
+      },
+      {
+        "queue": "twenty-background",
+        "max_batch_size": 100,
+        "max_batch_timeout": 60,
+        "max_retries": 2,
+      },
+    ],
+  },
+
+  // Durable Objects for Real-Time
+  "durable_objects": {
+    "bindings": [
+      {
+        "name": "REALTIME_HUB",
+        "class_name": "WorkspaceRealtimeHub",
+      },
+    ],
+  },
+
+  // Durable Object Migrations
+  "migrations": [
+    {
+      "tag": "v1",
+      "new_classes": ["WorkspaceRealtimeHub"],
+    },
+  ],
+
+  // Scheduled Triggers (Cron Jobs)
+  "triggers": {
+    "crons": ["*/1 * * * *", "*/5 * * * *", "0 * * * *"],
+  },
+
+  // Environment Variables
+  "vars": {
+    "ENVIRONMENT": "development",
+    "LOG_LEVEL": "debug",
+  },
+
+  // Environment-specific overrides
+  "env": {
+    "production": {
+      "routes": [
+        {
+          "pattern": "api.twenty.com/*",
+          "zone_name": "twenty.com",
+        },
+      ],
+      "vars": {
+        "ENVIRONMENT": "production",
+        "SERVER_URL": "https://api.twenty.com",
+        "FRONTEND_URL": "https://app.twenty.com",
+        "LOG_LEVEL": "info",
+      },
+    },
+    "staging": {
+      "vars": {
+        "ENVIRONMENT": "staging",
+        "SERVER_URL": "https://staging-api.twenty.com",
+        "FRONTEND_URL": "https://staging.twenty.com",
+        "LOG_LEVEL": "debug",
+      },
+    },
+  },
+}

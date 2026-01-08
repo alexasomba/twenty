@@ -9,6 +9,8 @@
     "start:prod": "node dist/main",
     "command:prod": "node dist/command/command",
     "worker:prod": "node dist/queue-worker/queue-worker",
+    "generate:worker-types": "wrangler types",
+    "typecheck:worker": "yarn generate:worker-types && npx tsc -p tsconfig.worker.json",
     "database:init:prod": "npx ts-node ./scripts/setup-db.ts && yarn database:migrate:prod",
     "database:migrate:prod": "npx -y typeorm migration:run -d dist/database/typeorm/core/core.datasource",
     "clickhouse:migrate:prod": "node dist/database/clickHouse/migrations/run-migrations.js",
@@ -37,6 +39,7 @@
     "@graphql-tools/schema": "10.0.4",
     "@graphql-tools/utils": "9.2.1",
     "@graphql-yoga/nestjs": "patch:@graphql-yoga/nestjs@2.1.0#./patches/@graphql-yoga+nestjs+2.1.0.patch",
+    "@hono/graphql-server": "^0.7.0",
     "@jrmdayn/googleapis-batcher": "^0.10.1",
     "@lingui/conf": "5.1.2",
     "@lingui/core": "^5.1.2",
@@ -114,6 +117,7 @@
     "graphql-type-json": "0.3.2",
     "graphql-upload": "16.0.2",
     "graphql-yoga": "4.0.5",
+    "hono": "^4.11.3",
     "html-to-text": "^9.0.5",
     "imapflow": "1.2.1",
     "ioredis": "5.6.0",
@@ -177,6 +181,7 @@
     "zod": "^4.1.11"
   },
   "devDependencies": {
+    "@cloudflare/workers-types": "^4.20260108.0",
     "@faker-js/faker": "^9.8.0",
     "@lingui/cli": "^5.1.2",
     "@nestjs/cli": "11.0.10",
@@ -215,9 +220,11 @@
     "@types/react": "^18.2.39",
     "@types/unzipper": "^0",
     "@yarnpkg/types": "^4.0.0",
+    "esbuild": "^0.24.2",
     "rimraf": "^5.0.5",
     "twenty-emails": "workspace:*",
-    "twenty-shared": "workspace:*"
+    "twenty-shared": "workspace:*",
+    "wrangler": "^4.57.0"
   },
   "engines": {
     "node": "^24.5.0",

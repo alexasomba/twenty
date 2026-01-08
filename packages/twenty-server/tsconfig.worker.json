@@ -1,0 +1,34 @@
+{
+  // Extends the main server tsconfig and overrides for Worker-specific compilation
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    // Worker targets modern ES modules, not CommonJS
+    "target": "ES2022",
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    // Include WebWorker lib for Worker runtime APIs
+    "lib": ["ES2022", "WebWorker"],
+    // Generated types from `wrangler types` - the source of truth for Env
+    "types": ["./worker-configuration.d.ts", "node"],
+    // No emit - bundled by esbuild
+    "noEmit": true
+  },
+  // Only include Worker-specific source files
+  "include": [
+    "src/worker.ts",
+    "src/types/worker-env.ts",
+    "src/router/**/*.ts",
+    "src/graphql/**/*.ts",
+    "src/core/**/*.ts",
+    "src/durable-objects/**/*.ts",
+    "src/database/typeorm/d1/**/*.ts"
+  ],
+  // Exclude NestJS server code, tests, and build outputs
+  "exclude": [
+    "node_modules",
+    "dist",
+    "src/engine/**",
+    "src/modules/**",
+    "test/**"
+  ]
+}

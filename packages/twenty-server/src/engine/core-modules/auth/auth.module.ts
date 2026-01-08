@@ -1,4 +1,3 @@
-/* eslint-disable no-restricted-imports */
 import { HttpModule } from '@nestjs/axios';
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -64,9 +63,8 @@ import { ConnectedAccountModule } from 'src/modules/connected-account/connected-
 import { MessageChannelSyncStatusService } from 'src/modules/messaging/common/services/message-channel-sync-status.service';
 import { MessagingFolderSyncManagerModule } from 'src/modules/messaging/message-folder-manager/messaging-folder-sync-manager.module';
 import { ApplicationEntity } from 'src/engine/core-modules/application/application.entity';
-
-import { TwoFactorAuthenticationMethodEntity } from '../two-factor-authentication/entities/two-factor-authentication-method.entity';
-import { TwoFactorAuthenticationModule } from '../two-factor-authentication/two-factor-authentication.module';
+import { TwoFactorAuthenticationMethodEntity } from 'src/engine/core-modules/two-factor-authentication/entities/two-factor-authentication-method.entity';
+import { TwoFactorAuthenticationModule } from 'src/engine/core-modules/two-factor-authentication/two-factor-authentication.module';
 
 import { AuthResolver } from './auth.resolver';
 

@@ -2,7 +2,9 @@
   "name": "twenty-server",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "projectType": "application",
-  "tags": ["scope:backend"],
+  "tags": [
+    "scope:backend"
+  ],
   "targets": {
     "build": {
       "executor": "nx:run-commands",
@@ -10,9 +12,60 @@
       "options": {
         "cwd": "packages/twenty-server",
         "parallel": false,
-        "commands": ["rimraf dist", "nest build --path ./tsconfig.build.json"]
+        "commands": [
+          "rimraf dist",
+          "nest build --path ./tsconfig.build.json"
+        ]
       },
-      "dependsOn": ["^build"]
+      "dependsOn": [
+        "^build"
+      ]
+    },
+    "build:worker": {
+      "executor": "nx:run-commands",
+      "cache": true,
+      "options": {
+        "cwd": "packages/twenty-server",
+        "parallel": false,
+        "commands": [
+          "rimraf dist-worker",
+          "esbuild src/worker.ts --bundle --platform=browser --format=esm --outfile=dist-worker/worker.js --external:node:* --minify"
+        ]
+      },
+      "dependsOn": [
+        "^build"
+      ]
+    },
+    "dev:worker": {
+      "executor": "nx:run-commands",
+      "cache": false,
+      "options": {
+        "cwd": "packages/twenty-server",
+        "command": "wrangler dev --local"
+      },
+      "dependsOn": [
+        "build:worker"
+      ]
+    },
+    "deploy:worker": {
+      "executor": "nx:run-commands",
+      "options": {
+        "cwd": "packages/twenty-server",
+        "command": "wrangler deploy"
+      },
+      "dependsOn": [
+        "build:worker"
+      ]
+    },
+    "deploy:worker:staging": {
+      "executor": "nx:run-commands",
+      "options": {
+        "cwd": "packages/twenty-server",
+        "command": "wrangler deploy --env staging"
+      },
+      "dependsOn": [
+        "build:worker"
+      ]
     },
     "test:integration": {
       "executor": "nx:run-commands",
@@ -45,7 +98,9 @@
     "start": {
       "executor": "nx:run-commands",
       "cache": false,
-      "dependsOn": ["build"],
+      "dependsOn": [
+        "build"
+      ],
       "options": {
         "cwd": "packages/twenty-server",
         "command": "NODE_ENV=development nest start --watch"
@@ -60,7 +115,9 @@
     },
     "start:ci-if-needed": {
       "executor": "nx:run-commands",
-      "dependsOn": ["build"],
+      "dependsOn": [
+        "build"
+      ],
       "options": {
         "cwd": "packages/twenty-server",
         "command": "curl -f -s http://localhost:3000/healthz > /dev/null 2>&1 && echo '✅ Server already running' || (echo '🚀 Server not running, starting...' && nohup nest start > server.log 2>&1 &)"
@@ -68,7 +125,9 @@
     },
     "start:debug": {
       "executor": "nx:run-commands",
-      "dependsOn": ["build"],
+      "dependsOn": [
+        "build"
+      ],
       "options": {
         "cwd": "packages/twenty-server",
         "command": "nx start --debug"
@@ -76,8 +135,12 @@
     },
     "reset:env": {
       "executor": "nx:run-commands",
-      "inputs": ["{projectRoot}/.env.example"],
-      "outputs": ["{projectRoot}/.env"],
+      "inputs": [
+        "{projectRoot}/.env.example"
+      ],
+      "outputs": [
+        "{projectRoot}/.env"
+      ],
       "cache": true,
       "options": {
         "cwd": "{projectRoot}",
@@ -86,8 +149,12 @@
     },
     "reset:env:e2e-testing-server": {
       "executor": "nx:run-commands",
-      "inputs": ["{projectRoot}/.env.e2e-testing-server"],
-      "outputs": ["{projectRoot}/.env"],
+      "inputs": [
+        "{projectRoot}/.env.e2e-testing-server"
+      ],
+      "outputs": [
+        "{projectRoot}/.env"
+      ],
       "cache": true,
       "options": {
         "cwd": "{projectRoot}",
@@ -96,7 +163,9 @@
     },
     "command": {
       "executor": "nx:run-commands",
-      "dependsOn": ["build"],
+      "dependsOn": [
+        "build"
+      ],
       "options": {
         "cwd": "packages/twenty-server",
         "command": "node dist/command/command.js"
@@ -111,7 +180,9 @@
     },
     "worker": {
       "executor": "nx:run-commands",
-      "dependsOn": ["build"],
+      "dependsOn": [
+        "build"
+      ],
       "options": {
         "cwd": "packages/twenty-server",
         "command": "node dist/queue-worker/queue-worker.js"
@@ -126,7 +197,9 @@
     },
     "ts-node": {
       "executor": "nx:run-commands",
-      "dependsOn": ["build"],
+      "dependsOn": [
+        "build"
+      ],
       "options": {
         "cwd": "packages/twenty-server",
         "command": "ts-node"
@@ -148,11 +221,17 @@
     },
     "lint": {
       "options": {
-        "lintFilePatterns": ["{projectRoot}/src/**/*.{ts,json}"],
+        "lintFilePatterns": [
+          "{projectRoot}/src/**/*.{ts,json}"
+        ],
         "maxWarnings": 0
       },
       "configurations": {
-        "ci": { "lintFilePatterns": ["{projectRoot}/**/*.{ts,json}"] },
+        "ci": {
+          "lintFilePatterns": [
+            "{projectRoot}/**/*.{ts,json}"
+          ]
+        },
         "fix": {}
       }
     },
@@ -178,7 +257,9 @@
     },
     "database:migrate": {
       "executor": "nx:run-commands",
-      "dependsOn": ["build"],
+      "dependsOn": [
+        "build"
+      ],
       "options": {
         "cwd": "packages/twenty-server",
         "commands": [
@@ -195,7 +276,9 @@
     },
     "database:migrate:revert": {
       "executor": "nx:run-commands",
-      "dependsOn": ["build"],
+      "dependsOn": [
+        "build"
+      ],
       "options": {
         "cwd": "packages/twenty-server",
         "commands": [
@@ -215,7 +298,9 @@
     },
     "database:reset": {
       "executor": "nx:run-commands",
-      "dependsOn": ["build"],
+      "dependsOn": [
+        "build"
+      ],
       "configurations": {
         "no-seed": {
           "cwd": "packages/twenty-server",
